@@ -19,9 +19,6 @@ c. Of all the problems found, which should be investigated first?
 Why synthetic data
 The project is based on the kind of data collected in facility reporting but real client data cannot be published. So the data was generated to follow the same structure, with realistic ranges and a few planted problems. This also lets the results be scored, because the correct answers are known.
 
-**Table	Rows	Content**
-### Database Schema
-
 | Table Name | Rows | Description |
 |---|---:|---|
 | `dim_site` | 10 | Site profile including city, type, floor area, cooling type, operating hours, seating capacity, generator and solar capacity, and electricity tariff. |
@@ -32,4 +29,54 @@ The project is based on the kind of data collected in facility reporting but rea
 | `fact_maintenance_tickets` | 66 | Maintenance work orders containing site, asset, dates, ticket type, cost, and status. |
 | `dim_reference_factors` | 4 | Reference factors for emission calculations and cost conversions, including emission factors and prices. |
 
+### Planted problems (used only to score detection)
+
+| Site | Problem Identified |
+|---|---|
+| C Bengaluru | Night-time load increased by approximately 55% from 10 July due to a schedule override. |
+| B Mumbai | Gradual increase in consumption over several months due to a fouled chiller; normalized after cleaning on 19 September. |
+| H Pune | Generator operated on weekdays during June despite a healthy grid supply. |
+| A Delhi | Solar output dropped to 40% between 15 August and 5 September due to an inverter fault. |
+| F Kolkata | Water leakage began on 1 August. |
+| J Mumbai | No weekend or holiday energy setback observed. |
+| D Hyderabad | Five consecutive days of missing grid readings (12–16 June). |
+| D Hyderabad | An anomalous grid reading, approximately 10 times higher than expected, recorded on 22 July. |
+| E Chennai | Wet-waste spike in August and consistently low recycling levels. |
+| C Bengaluru | One-time building waste spike of 1,250 kg recorded in July. |
+
+## 3. Data-quality checks
+Seven queries cover row counts, duplicate site-days, orphan keys, missing grid readings, extreme readings (more than 3× the site average), solar blanks at solar sites and generator hours with no matching outage. The last query gave an early hint of a planted problem: H Pune logged about 82 generator hours with no outage.
+
+**SQL Views**
+**vw_daily_base**	Joins the daily facts with site, date and weather, giving one wide row per site-day
+**vw_daily_flagged**	Adds the data-quality flag (OK, MISSING, OUTLIER)
+**vw_daily_clean**	Replaces bad readings, and adds total consumption, cost, and Scope 1 and 2 emissions
+**vw_site_month**	Monthly KPIs per site: kWh per m², kWh per person, shares, water, cost, emissions
+**vw_site_kpi**	Whole-period KPIs per site, including annualised EUI
+**vw_waste_kpi**	Waste totals, recycling rate and waste per person
+**vw_waste_long**	Waste unpivoted from wide to long, the shape BI tools prefer
+
+#### Data model
+The tables follow a star schema, fact_daily_utilities, fact_waste_monthly and fact_maintenance_tickets are fact tables; dim_site, dim_date and dim_reference_factors are dimensions, linked by site_id and date_id. Four view outputs are saved as CSV and read by the notebook: vw_daily_clean, vw_site_kpi, vw_waste_kpi and vw_waste_long.
+
+## 4. Exploratory Data Analysis (EDA)
+
+Objective: Understand resource consumption patterns, establish operational context and identify initial irregularities across facilities.
+The analysis covers:
+- Energy consumption: Energy Use Intensity (EUI), measured in kWh/m²/year, and the contribution of grid electricity, solar and diesel generation.
+- Weather sensitivity: Relationship between Cooling Degree Days (CDD) and electricity consumption.
+- Operating patterns: Comparison of weekday and weekend consumption against corresponding occupancy levels.
+- Night-time baseload: Weekly electricity consumption between 12 AM and 5 AM to identify unusually high overnight loads.
+- Diesel generator usage: Comparison of generator operating hours with recorded grid outages.
+- Solar performance: Solar generation per installed kWp across facilities and weather conditions.
+- Water consumption: Weekly water usage per person.
+- Waste management: Monthly recycling rates and wet/food waste generation per person.
+Initial observations:
+- C Bengaluru experienced a noticeable increase in night-time electricity consumption in July.
+- H Pune showed generator operating hours substantially higher than recorded grid-outage hours.
+- J Mumbai maintained relatively high energy consumption during weekends despite significantly lower occupancy.
+- A Delhi showed comparatively weak solar generation against peer facilities during August.
+- F Kolkata experienced an increase in water consumption per person.
+- E Chennai showed comparatively low recycling rates and an increase in wet waste per person.
+These observations formed the basis for further investigation rather than being treated as confirmed operational problems.
 

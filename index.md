@@ -63,23 +63,42 @@ The project follows a Star Schema structure:
 - **Relationships:** Tables are connected through relevant keys, primarily site_id and date_id.
 
 ## 4. Exploratory Data Analysis (EDA)
+
 <iframe src="notebooks/analysis.html" width="100%" height="800px"></iframe> 
 
-The analysis covers:
-- Energy consumption: Energy Use Intensity (EUI), measured in kWh/m²/year, and the contribution of grid electricity, solar and diesel generation.
-- Weather sensitivity: Relationship between Cooling Degree Days (CDD) and electricity consumption.
-- Operating patterns: Comparison of weekday and weekend consumption against corresponding occupancy levels.
-- Night-time baseload: Weekly electricity consumption between 12 AM and 5 AM to identify unusually high overnight loads.
-- Diesel generator usage: Comparison of generator operating hours with recorded grid outages.
-- Solar performance: Solar generation per installed kWp across facilities and weather conditions.
-- Water consumption: Weekly water usage per person.
-- Waste management: Monthly recycling rates and wet/food waste generation per person.
-Initial observations:
-- C Bengaluru experienced a noticeable increase in night-time electricity consumption in July.
-- H Pune showed generator operating hours substantially higher than recorded grid-outage hours.
-- J Mumbai maintained relatively high energy consumption during weekends despite significantly lower occupancy.
-- A Delhi showed comparatively weak solar generation against peer facilities during August.
-- F Kolkata experienced an increase in water consumption per person.
-- E Chennai showed comparatively low recycling rates and an increase in wet waste per person.
-These observations formed the basis for further investigation rather than being treated as confirmed operational problems.
+**Part 1: Explore the data**
+- Energy intensity: the annualised EUI ranges from 126 to 192 kWh/m²/yr. The highest are E Chennai, B Mumbai and I Delhi (long operating hours), and the lowest is C Bengaluru. These figures are raw and not yet adjusted for weather.
+- Weather: weekday energy correlates about 0.70 with cooling degree days. Eight of ten sites fit well (R² 0.86 to 0.96), but B Mumbai (0.47) and C Bengaluru (0.52) fit poorly, which hints that something other than weather is affecting them.
+- Weekend use: general-shift offices use about 50% of their weekday energy on off-days, and 24x7 sites about 92%. J Mumbai uses 80% although only 7% of people are present.
+- Night-time load: C Bengaluru jumps from about 259 to 391 kWh per night (+51%) in July, with no change in headcount.
+- Generator: H Pune ran 121 hours against only 30 outage hours. Other sites are within 8 to 12 hours of their outage time.
+- Solar: all three solar sites drop in the monsoon, and A Delhi is about 30% below the others in August.
+- Water: F Kolkata rises from 50 to 54 to 78 to 82 litres per person per day from August.
+- Waste: E Chennai recycles about 22% against about 44% elsewhere, has a wet-waste spike in August, and C Bengaluru has a one-off 1,250 kg of building waste.
+- Emissions: 98.5% come from grid electricity and 1.5% from diesel.
+
+**Part 2: Peer grouping and expected vs actual**
+- Peer groups: sites are grouped by operating hours, giving General shift (6 sites) and Extended hours (4 sites), so each site is compared only with similar ones.
+- Expected-consumption model: a regression per site on cooling degree days, headcount and day type. It is trained on April to June and tested on unseen July to September data.
+- Accuracy: typical error is about 2% for eight sites. The larger errors at C Bengaluru (9.1%) and B Mumbai (5.5%) reflect real changes.
+- Excess vs own baseline (July to September): C Bengaluru +9.2% (about ₹1.18 lakh), B Mumbai +4.4% (about ₹0.83 lakh), all other sites within about ±1%.
+- Peer comparison: J Mumbai’s off-day intensity is 158% of its peers, and F Kolkata is about 10% above its peers.
+
+**Part 3: Alerts and explanations**
+- Nine checks: rolling z-score, CUSUM drift, night load, water, generator vs outages, solar vs peers, data quality, weekend vs peers, and waste.
+- Calibration: the CUSUM alarm level was set from each site’s normal noise, not from the answer key.
+- Detection: 19 alerts were raised, and all 10 planted problems were found. Alarms came the same day up to 4 days after onset. Waste took about 30 days because it is reported monthly. B Mumbai’s drift was first flagged on 2 July, since the baseline had already absorbed part of it.
+- Explanations: each alert splits the change into weather, occupancy, calendar and unexplained effects. For C Bengaluru, weather should have lowered use by 138 kWh/day, but 167 kWh/day is unexplained, and 82% of the excess falls at night. That points to a schedule problem.
+- B Mumbai: its excess is spread across the day, which points to plant efficiency.
+- False alarms: a few small ones, costing between about ₹90 and ₹1,500.
+
+**Part 4: Priority list**
+- Merging: the 19 alerts were merged into 13 issues, 6 of them material. Adding the alerts naively gives ₹9.9 lakh, and the merged total is ₹6.9 lakh.
+- Labels: each issue is marked ongoing or stopped, and given a confidence level.
+- Score: money 50%, carbon 20%, ongoing 20%, confidence 10%, tested under four different weightings.
+- Ranking: 1 J Mumbai (weekend setback), 2 C Bengaluru (energy), 3 H Pune (diesel), 4 B Mumbai (drift), 5 F Kolkata (water leak), 6 A Delhi (solar fault).
+- Stability: J Mumbai ranks first under every weighting, and the middle ranks shift.
+- Total impact: about ₹6.9 lakh and 43.8 tCO₂e over six months, roughly 2% of utility cost. The three ongoing issues would cost about ₹11.3 lakh a year if left unfixed.
+
+
 

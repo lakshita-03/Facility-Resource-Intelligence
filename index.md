@@ -103,3 +103,18 @@ The project follows a Star Schema structure:
 ## 5. Interactive Dasboard
 <iframe src="notebooks/dashboard.html" width="100%" height="800px"></iframe>
 
+## 6. Key Insights
+1. Raw totals hide waste. C Bengaluru’s consumption was only about 3% above its April to June level, yet after adjusting for a cooler monsoon the building was using about 10% more than it should.
+A site’s own history cannot reveal a problem that was always there. J Mumbai passed its own baseline but uses about 58% more than its peers on weekends. Both views are needed.
+2. Night-time load is the cleanest waste signal. C Bengaluru’s step (+51%, with no change in occupancy) is visible within days, and it points to scheduling, not plant efficiency.
+3. Generator logs should be reconciled against the outage log. H Pune ran its generator about 82 hours with no outage, wasting roughly 1,809 litres of diesel (about ₹1.63 lakh).
+4. Electricity efficiency matters most for carbon. 98.5% of the portfolio’s emissions come from grid electricity, so carbon reduction depends on energy efficiency far more than on diesel.
+5. Counting an issue once changes the answer. Naively adding alerts gave ₹9.9 lakh. The merged figure is ₹6.9 lakh.
+Data quality needs a gate. One keying error, about ten times too large, would have distorted that site’s monthly figures. The checks catch it, and the monthly script stops on critical problems before a wrong number reaches a report.
+6. Small money does not mean no problem. F Kolkata’s leak is cheap in rupees but is 206 kL of wasted water, and it is still ongoing.
+
+## 7. Conclusion
+This project shows that routine facility data can be turned into a short, ranked list of problems with a rupee and carbon value attached. Three ideas made the difference. Weather-adjusted baselines revealed waste that raw totals hid: C Bengaluru looked about 3% above normal, but was using roughly 10% more than it should once a cooler monsoon was accounted for. Peer comparison caught a problem a site’s own history could not: J Mumbai kept using about 58% more than similar offices on weekends. Merging duplicate alerts also mattered, because it brought the estimate down from ₹9.9 lakh to ₹6.9 lakh.
+
+On the synthetic dataset, all 10 planted problems were found. The ranked issues come to about ₹6.9 lakh and 43.8 tCO₂e over six months, around 2% of utility spend. The three issues still ongoing would cost about ₹11.3 lakh a year if left unfixed. These results show that the method works. They are not real savings, so the next step is to test it on real meter data with verified emission factors.
+

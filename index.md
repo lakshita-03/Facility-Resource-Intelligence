@@ -56,12 +56,14 @@ Seven queries cover row counts, duplicate site-days, orphan keys, missing grid r
 - **vw_waste_kpi**	Waste totals, recycling rate and waste per person
 - **vw_waste_long**	Waste unpivoted from wide to long, the shape BI tools prefer
 
-#### Data model
-The tables follow a star schema, fact_daily_utilities, fact_waste_monthly and fact_maintenance_tickets are fact tables; dim_site, dim_date and dim_reference_factors are dimensions, linked by site_id and date_id. Four view outputs are saved as CSV and read by the notebook: vw_daily_clean, vw_site_kpi, vw_waste_kpi and vw_waste_long.
+### Data Model
+The project follows a Star Schema structure:
+- **Fact Tables:** fact_daily_utilities, fact_waste_monthly, fact_maintenance_tickets
+- **Dimension Tables:** dim_site, dim_date, dim_reference_factors
+- **Relationships:** Tables are connected through relevant keys, primarily site_id and date_id.
 
 ## 4. Exploratory Data Analysis (EDA)
 
-Objective: Understand resource consumption patterns, establish operational context and identify initial irregularities across facilities.
 The analysis covers:
 - Energy consumption: Energy Use Intensity (EUI), measured in kWh/m²/year, and the contribution of grid electricity, solar and diesel generation.
 - Weather sensitivity: Relationship between Cooling Degree Days (CDD) and electricity consumption.

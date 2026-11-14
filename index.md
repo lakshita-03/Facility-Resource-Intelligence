@@ -63,7 +63,8 @@ The project follows a Star Schema structure:
 - **Relationships:** Tables are connected through relevant keys, primarily site_id and date_id.
 
 ## 4. Exploratory Data Analysis (EDA)
-<iframe src="notebooks/analysis.ipynb" width="100%" height="800px"></iframe> 
+<iframe src="notebooks/analysis.html" width="100%" height="800px"></iframe> 
+
 The analysis covers:
 - Energy consumption: Energy Use Intensity (EUI), measured in kWh/m²/year, and the contribution of grid electricity, solar and diesel generation.
 - Weather sensitivity: Relationship between Cooling Degree Days (CDD) and electricity consumption.

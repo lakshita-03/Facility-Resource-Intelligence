@@ -48,13 +48,13 @@ The project is based on the kind of data collected in facility reporting but rea
 Seven queries cover row counts, duplicate site-days, orphan keys, missing grid readings, extreme readings (more than 3× the site average), solar blanks at solar sites and generator hours with no matching outage. The last query gave an early hint of a planted problem: H Pune logged about 82 generator hours with no outage.
 
 **SQL Views**
-**vw_daily_base**	Joins the daily facts with site, date and weather, giving one wide row per site-day
-**vw_daily_flagged**	Adds the data-quality flag (OK, MISSING, OUTLIER)
-**vw_daily_clean**	Replaces bad readings, and adds total consumption, cost, and Scope 1 and 2 emissions
-**vw_site_month**	Monthly KPIs per site: kWh per m², kWh per person, shares, water, cost, emissions
-**vw_site_kpi**	Whole-period KPIs per site, including annualised EUI
-**vw_waste_kpi**	Waste totals, recycling rate and waste per person
-**vw_waste_long**	Waste unpivoted from wide to long, the shape BI tools prefer
+- **vw_daily_base**	Joins the daily facts with site, date and weather, giving one wide row per site-day
+- **vw_daily_flagged**	Adds the data-quality flag (OK, MISSING, OUTLIER)
+- **vw_daily_clean**	Replaces bad readings, and adds total consumption, cost, and Scope 1 and 2 emissions
+- **vw_site_month**	Monthly KPIs per site: kWh per m², kWh per person, shares, water, cost, emissions
+- **vw_site_kpi**	Whole-period KPIs per site, including annualised EUI
+- **vw_waste_kpi**	Waste totals, recycling rate and waste per person
+- **vw_waste_long**	Waste unpivoted from wide to long, the shape BI tools prefer
 
 #### Data model
 The tables follow a star schema, fact_daily_utilities, fact_waste_monthly and fact_maintenance_tickets are fact tables; dim_site, dim_date and dim_reference_factors are dimensions, linked by site_id and date_id. Four view outputs are saved as CSV and read by the notebook: vw_daily_clean, vw_site_kpi, vw_waste_kpi and vw_waste_long.

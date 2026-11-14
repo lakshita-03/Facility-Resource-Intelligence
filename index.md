@@ -100,5 +100,6 @@ The project follows a Star Schema structure:
 - Stability: J Mumbai ranks first under every weighting, and the middle ranks shift.
 - Total impact: about ₹6.9 lakh and 43.8 tCO₂e over six months, roughly 2% of utility cost. The three ongoing issues would cost about ₹11.3 lakh a year if left unfixed.
 
-
+## 5. Interactive Dasboard
+<iframe src="notebooks/dashboard.html" width="100%" height="800px"></iframe>
 

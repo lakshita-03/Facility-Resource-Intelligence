@@ -1,7 +1,9 @@
 # A Data-Driven Approach to Sustainability and Operational Efficiency
-**Facility Resource Intelligence** is an end-to-end sustainability operations analytics project designed to identify resource inefficiencies across commercial facilities, quantify their financial and environmental impact and prioritise corrective actions.
 
-The project analyses energy, water, diesel generator usage, solar generation and waste across 10 facilities over a six-month period (April–September 2026). It combines exploratory data analysis, SQL-based data preparation, statistical modelling, anomaly detection and interactive reporting to translate operational data into actionable insights. The solution goes beyond conventional consumption monitoring by establishing expected consumption baselines, identifying deviations from normal operating behaviour, estimating their impact and ranking issues based on financial loss, carbon emissions, urgency and confidence.
+**Facility Resource Intelligence** is an end-to-end sustainability operations analytics project designed to identify resource inefficiencies across commercial facilities, quantify their financial and environmental impact and prioritise corrective actions.
+Facility teams collect energy, water, diesel generator, solar and waste figures every month, but the reporting mostly records and organises these numbers. It rarely tells you whether a site is using more than it should. That gap matters because waste costs money and adds emissions, yet it seldom shows up as an error in a monthly report.
+
+This project was built to close that gap. It uses six months of data (April to September 2026) for 10 sites across 8 cities, with the aim of finding which sites use more than they should once weather and occupancy are taken into account, estimating what that costs in ₹ and carbon, and ranking what to fix first. The data is synthetic, modelled on a real reporting format, with 10 planted problems used to check whether the analysis can find them. The results therefore show that the method works, not real savings.
 
 ## 1. Project overview
 The problem: Facility teams collect energy, water, diesel generator, solar and waste figures every month. The reporting mostly records and organises these numbers. It rarely answers the questions that matter:

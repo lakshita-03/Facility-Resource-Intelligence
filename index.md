@@ -3,7 +3,6 @@
 <div align="center">
     <img src="data/sustainability.webp" alt="Sustainability"
          style="width:42%; height:250px; object-fit:contain; vertical-align:middle;">
-
     <img src="data/SDGS.webp" alt="SDGs"
          style="width:42%; height:350px; object-fit:contain; vertical-align:middle;">
 </div>

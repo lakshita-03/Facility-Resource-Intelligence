@@ -1,8 +1,11 @@
 # A Data-Driven Approach to Sustainability and Operational Efficiency
 
-<div>
-    <img src="data/sustainability.webp" alt="Sustainability" width="45%" height="250">
-    <img src="data/SDGS.webp" alt="SDGs" width="45%" height="350">
+<div align="center">
+    <img src="data/sustainability.webp" alt="Sustainability"
+         style="width:42%; height:250px; object-fit:contain; vertical-align:middle;">
+
+    <img src="data/SDGS.webp" alt="SDGs"
+         style="width:42%; height:350px; object-fit:contain; vertical-align:middle;">
 </div>
 
 **Facility Resource Intelligence** is an end-to-end sustainability operations analytics project designed to identify resource inefficiencies across commercial facilities, quantify their financial and environmental impact and prioritise corrective actions.

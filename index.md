@@ -7,6 +7,8 @@
          style="width:42%; height:250px; object-fit:contain; vertical-align:middle;">
 </div>
 
+<br>
+
 **Facility Resource Intelligence** is an end-to-end sustainability operations analytics project designed to identify resource inefficiencies across commercial facilities, quantify their financial and environmental impact and prioritise corrective actions.
 Facility teams collect energy, water, diesel generator, solar and waste figures every month, but the reporting mostly records and organises these numbers. It rarely tells you whether a site is using more than it should. That gap matters because waste costs money and adds emissions, yet it seldom shows up as an error in a monthly report.
 
